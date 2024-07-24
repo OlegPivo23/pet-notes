@@ -80,10 +80,6 @@ const updateColor = (event: Event) => {
   target.blur(); // Удалить фокус с элемента, чтобы закрыть окно выбора цвета
 };
 
-const triggerColorPicker = () => {
-  colorInput.value?.click();
-};
-
 const removeNote = (index: number) => {
   noteData.value.splice(index, 1);
 };
