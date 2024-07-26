@@ -84,7 +84,6 @@ const removeNote = (index: number) => {
   noteData.value.splice(index, 1);
 };
 
-// Переменные для хранения данных о перетаскивании
 let draggingIndex = ref<number | null>(null);
 let startX = ref<number>(0);
 let startY = ref<number>(0);

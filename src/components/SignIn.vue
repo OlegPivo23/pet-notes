@@ -19,20 +19,15 @@
           label="Password"
           placeholder="Enter your password"
           variant="underlined"
+          type="password"
         ></v-text-field>
-
-        <v-checkbox
-          v-model="terms"
-          color="secondary"
-          label="I agree to site terms and conditions"
-        ></v-checkbox>
       </v-container>
 
       <v-divider></v-divider>
 
       <v-card-actions class="d-flex flex-column">
-        <v-btn color="primary" class="mb-2" @click="register">
-          Зарегестрироваться
+        <v-btn color="primary" class="mb-2" @click="signIn">
+          Войти
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
         <RouterLink to="/">
@@ -46,18 +41,21 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    email: null,
-    password: null,
-    terms: false,
-  }),
-  methods: {
-    register() {
-      // Добавьте логику регистрации здесь
-    },
-  },
+<script setup lang="ts">
+import { useAuthStore } from "../stores/auth";
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const email = ref<string>("");
+const password = ref<string>("");
+
+const signIn = async (): Promise<void> => {
+  await authStore.auth(
+    { email: email.value, password: password.value },
+    "login"
+  );
+  router.push("/main");
 };
 </script>
 
