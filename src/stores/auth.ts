@@ -4,7 +4,6 @@ import axios, { AxiosResponse } from "axios";
 
 const API_KEY = import.meta.env.VITE_API_KEY_FIREBASE;
 
-// Интерфейсы для типизации данных
 interface UserInfo {
   token: string;
   email: string;
