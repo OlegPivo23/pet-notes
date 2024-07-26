@@ -53,7 +53,7 @@ const password = ref<string>("");
 const signIn = async (): Promise<void> => {
   await authStore.auth(
     { email: email.value, password: password.value },
-    "login"
+    "signin"
   );
   router.push("/main");
 };
