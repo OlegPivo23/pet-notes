@@ -77,7 +77,7 @@ const handleAddNote = () => {
 const updateColor = (event: Event) => {
   const target = event.target as HTMLInputElement;
   userColor.value = target.value;
-  target.blur(); // Удалить фокус с элемента, чтобы закрыть окно выбора цвета
+  target.blur(); 
 };
 
 const removeNote = (index: number) => {

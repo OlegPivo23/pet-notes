@@ -1,26 +1,51 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const API_KEY = import.meta.env.VITE_API_KEY_FIREBASE;
 
+// Интерфейсы для типизации данных
+interface UserInfo {
+  token: string;
+  email: string;
+  userId: string;
+  refreshToken: string;
+}
+
+interface AuthPayload {
+  email: string;
+  password: string;
+  returnSecureToken?: boolean;
+}
+
+interface AuthResponse {
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+  registered?: boolean;
+}
+
+type AuthType = "signup" | "signin";
 
 export const useAuthStore = defineStore("auth", () => {
-  const userInfo = ref({
+  const userInfo = ref<UserInfo>({
     token: "",
     email: "",
     userId: "",
     refreshToken: "",
   });
-  const error = ref("");
-  const loader = ref(false);
 
-  const auth = async (payload, type) => {
+  const error = ref<string>("");
+  const loader = ref<boolean>(false);
+
+  const auth = async (payload: AuthPayload, type: AuthType): Promise<void> => {
     const stringUrl = type === "signup" ? "signUp" : "signInWithPassword";
     error.value = "";
     loader.value = true;
     try {
-      let response = await axios.post(
+      const response: AxiosResponse<AuthResponse> = await axios.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:${stringUrl}?key=${API_KEY}`,
         {
           ...payload,
@@ -40,7 +65,7 @@ export const useAuthStore = defineStore("auth", () => {
           refreshToken: userInfo.value.refreshToken,
         })
       );
-    } catch (err) {
+    } catch (err: any) {
       switch (err.response.data.error.message) {
         case "EMAIL_EXISTS":
           error.value = "Email exists";
@@ -58,13 +83,13 @@ export const useAuthStore = defineStore("auth", () => {
           error.value = "Error";
           break;
       }
-      throw error.value;
+      throw new Error(error.value);
     } finally {
       loader.value = false;
     }
   };
 
-  const logout = () => {
+  const logout = (): void => {
     userInfo.value = {
       token: "",
       email: "",
