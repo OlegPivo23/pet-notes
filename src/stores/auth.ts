@@ -82,7 +82,7 @@ export const useAuthStore = defineStore("auth", () => {
           error.value = "Error";
           break;
       }
-      throw new Error(error.value);
+      throw  Error(error.value);
     } finally {
       loader.value = false;
     }
